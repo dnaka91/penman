@@ -8,9 +8,11 @@ edition = "2021"
 members = ["db"]
 
 [dependencies]
-axum = "0.6.18"
+axum = {version="0.6.18", features = ["macros"]}
 db={path="./db"}
 dotenvy = "0.15.7"
 tokio = {version="1.28.1", features = ["full"]}
 toml = "0.7.4"
 serde = {version="1.0.163", features=["derive"]}
+jsonwebtoken = "8.3.0"
+anyhow = "1.0.71"

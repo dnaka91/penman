@@ -1,14 +1,8 @@
 use serde::Deserialize;
+use db::Providers;
 
 #[derive(Deserialize)]
 pub struct Config {
-    pub database: DatabaseTypes,
-    
+    pub database: Providers,
 }
 
-#[derive(Debug, Deserialize)]
-pub enum DatabaseTypes {
-    MongoDB,
-    PostgreSQL,
-    MySQL
-}

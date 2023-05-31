@@ -6,7 +6,7 @@ pub struct PostgresProvider {
 }
 
 impl PostgresProvider {
-    async fn new(database_url: String) -> Result<Self> {
+    pub async fn new(database_url: String) -> Result<Self> {
         let pg_pool = PgPoolOptions::new()
             .max_connections(5)
             .connect(&database_url)

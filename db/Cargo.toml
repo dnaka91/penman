@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.71"
 async-trait = "0.1.68"
+chrono = "0.4.25"
 mongodb = "2.5.0"
 sqlx = {version="0.6.3", features = [ "runtime-tokio-native-tls", "postgres", "mysql" ]}
-
+serde = {version="1.0.163", features=["derive"]}
