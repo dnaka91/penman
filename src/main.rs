@@ -1,7 +1,7 @@
 mod auth;
 mod config;
+mod env;
 
-use std::env;
 use axum::{
     http::StatusCode,
     response::{IntoResponse, Response},
@@ -10,40 +10,7 @@ use axum::{
 use db::postgres::PostgresProvider;
 use std::{net::Ipv4Addr, sync::Arc};
 use anyhow::Result;
-
-pub type AppResult<T> = Result<T, AppError>;
-pub type AppJsonResult<T> = AppResult<Json<T>>;
-pub enum AppError {
-    DatabaseError(String),
-    NotFound,
-}
-#[derive(Clone)]
-pub struct AppState {
-    pub db: Arc<PostgresProvider>,
-}
-
-static PORT: &str = "PORT";
-static DATABASE_URL: &str = "DATABASE_URL";
-
-pub struct Env {
-    pub port: u16,
-    pub database_url: String,
-}
-
-impl Env {
-    fn init() -> Result<Self> {
-        let port = std::env::var(PORT)
-        .unwrap_or_else(|_| String::from("3000"))
-        .parse::<u16>()
-        .expect("Failed to parse Port.");
-        let db_url = env::var(DATABASE_URL).expect("Database URL was not set.").to_string();
-
-        Ok(Self {
-            port: port,
-            database_url: db_url,
-        })
-    }
-}
+use crate::env::Env;
 
 #[tokio::main]
 async fn main() {
@@ -67,6 +34,17 @@ async fn main() {
         .serve(app.into_make_service())
         .await
         .expect("Failed to start server");
+}
+
+pub type AppResult<T> = Result<T, AppError>;
+pub type AppJsonResult<T> = AppResult<Json<T>>;
+pub enum AppError {
+    DatabaseError(String),
+    NotFound,
+}
+#[derive(Clone)]
+pub struct AppState {
+    pub db: Arc<PostgresProvider>,
 }
 
 impl IntoResponse for AppError {
